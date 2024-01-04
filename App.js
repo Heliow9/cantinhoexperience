@@ -449,6 +449,7 @@ export default function App() {
 
   function handlerCalculateValue(item) {
 
+
     var firstPizza = item;
     var addAdicional = firstPizza.adicional ? firstPizza.adicional.value : 0;
     var addPizza = firstPizza.pizza ? firstPizza.pizza.value : 0;
@@ -882,7 +883,7 @@ export default function App() {
 
 
                     <View style={styles.itemCart}>
-                      <Text style={styles.itemCartName} >{item.item.pizza && item.item.pizzatwo ? `${item.item.pizza.name} x ${item.item.pizzatwo.name}` : item.item.pizza.name} </Text>
+                      <Text style={styles.itemCartName} >{item.item.pizza && item.item.pizzatwo ? `1/2 ${item.item.pizza.name} 1/2${item.item.pizzatwo.name}` : item.item.pizza.name} </Text>
                       <View style={styles.cartValueDecrement}>
                         <Text>R${item.item.pizza.value.toFixed(2)}</Text>
                         <View style={styles.decrement}><Text style={styles.decrementText}>-</Text></View>
@@ -899,7 +900,7 @@ export default function App() {
 
                       </View>
                     </View>
-                    <View style={styles.itemDescription}><Text style={styles.itemDescriptionText}>{item.item.pizza.detail}</Text></View>
+                    <View style={styles.itemDescription}><Text style={styles.itemDescriptionText}>{item.item.pizza && item.item.pizzatwo ? `1/2- ${item.item.pizza.name}${item.item.pizza.detail}  1/2- ${item.item.pizzatwo.name}${item.item.pizzatwo.detail}` : item.item.pizza.detail}</Text></View>
                     <View >
                       {item.item.bordas || item.item.adicional ? <Text style={styles.itemAditionals}>Adicionais:</Text> : null}
                       {
@@ -1173,7 +1174,9 @@ const styles = StyleSheet.create({
   },
 
   itemDescriptionText: {
-    fontSize: 11
+    fontSize: 11,
+    width:308,
+    fontWeight:'bold'
   },
 
   cartValueDecrement: {
