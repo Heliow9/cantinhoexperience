@@ -21,6 +21,71 @@ export default function App() {
 
 
 
+
+  const twoFlavorReturn = [
+    {
+      name: 'Calabresa',
+      value: 29,
+      detail: '(Queijo Mussarela, calabresa, cebola e oregano)',
+      id: 1
+    },
+    {
+      name: 'Presunto',
+      value: 31,
+      detail: '(Queijo Mussarela, Presunto, cebola e oregano)',
+      id: 2
+    },
+    {
+      name: 'Frango',
+      value: 32,
+      detail: '(Queijo Mussarela, Frango, cebola e oregano)',
+      id: 3
+    },
+    {
+      name: 'Napolitana',
+      value: 33,
+      detail: '(Queijo Mussarela, tomate e oregano)',
+      id: 4
+    },
+    {
+      name: 'Baianinha',
+      value: 33,
+      detail: '(Queijo Mussarela, Calabresa picadinha, pimenta do reino, cebola e oregano)',
+      id: 5
+    },
+    {
+      name: 'Marguerita',
+      value: 34,
+      detail: '(Queijo Mussarela, tomate e manjericão)',
+      id: 6
+    },
+    {
+      name: 'Milho',
+      value: 38,
+      detail: '(Queijo Mussarela, milho e oregano)',
+      id: 7
+    },
+    {
+      name: 'Mista',
+      value: 35,
+      detail: '(Queijo Mussarela, Calabresa picadinha, frango, presunto, milho, ervilha e orégano)',
+      id: 8
+    },
+    {
+      name: 'Frango com Catupiry',
+      value: 35,
+      detail: '(Queijo Mussarela, Frango, catupiry, azeitona e oregano)',
+      id: 9
+    },
+    {
+      name: 'Frango com Catupiry',
+      value: 35,
+      detail: '(Queijo Mussarela, Frango, catupiry, azeitona e oregano)',
+      id: 10
+    },
+  ]
+
+
   const [dataPizza, setPizza] = useState([
     {
       name: 'Calabresa',
@@ -170,7 +235,6 @@ export default function App() {
   ])
 
   const [pizzasSecondFlavorItems, setPizzasTwoFlavorItems] = useState()
-
   const [pizzasTwoFist, setPizzasTwoFist] = useState([])
   const [pizzasTwoSecond, setPizzasTwoSecond] = useState([])
   const [firstflavor, setFirstFlavor] = useState()
@@ -299,7 +363,7 @@ export default function App() {
   function finalStep(item) {
     if (firstflavor && secondflavor) {
       addToCartTwoFlavor(item)
-      setMenu(pizzasTwoFlavor)
+      setMenu(pizzas)
 
     } else {
       addToCart(item)
@@ -330,6 +394,7 @@ export default function App() {
     handlerCalculateValue(itemsPizza)
     setSelectedPizza([])
     setMenu(pizzas)
+    console.log(cartItems)
   }
 
   function addToCartTwoFlavor(item) {
@@ -339,25 +404,27 @@ export default function App() {
       pizzatwo: secondflavor,
       adicional: selectedAditional,
       bordas: item ? item : null,
-
     }
 
-    setFirstFlavor()
-    setSecondFlavor()
 
-    // setItemsCart([...cartItems, itemsPizza])
-    // handlerCalculateValue(itemsPizza)
-    // setMenu(pizzas)
+    setItemsCart([...cartItems, itemsPizza])
+    handlerCalculateValue(itemsPizza)
+    setPizzasTwoFlavor(twoFlavorReturn)
+    setMenu(pizzas)
+    setFirstFlavor([])
+    setSecondFlavor([])
+    console.log(cartItems)
   }
 
 
+
   function HandlerAddTwoFirstStep(item, index) {
-    setFirstFlavor(item)
+    if (!firstflavor) {
+      setFirstFlavor(item)
+    }
     const items = pizzasTwoFlavor;
     items.splice(index, 1)
     setPizzasTwoFlavor(items)
-
-
     setPizzasTwoFlavorItems(items)
     if (firstflavor) {
       setSecondFlavor(item)
@@ -413,7 +480,7 @@ export default function App() {
     }, initialValue);
 
     setTotalValue(totalValue)
-    console.log(totalValue)
+
 
   }
 
@@ -532,7 +599,7 @@ export default function App() {
     var data = new Date()
     var datahour = new Date().toLocaleTimeString('pt-BR')
     const datanow = data.toLocaleDateString('pt-BR')
-    console.log(datanow)
+
     printerService.sendStartConnectionPrinterIntern()
     printerService.sendPrinterText('Cantinho da Praça       ', '1', true, false, 'Tahoma', 2)
     printerService.sendPrinterText('CNPJ: 26.181.882/0001-22       ', '1', false, false, 'Tahoma', 14)
@@ -597,7 +664,7 @@ export default function App() {
                   <Text style={styles.textItemButtom}>Pizza-G 1 Sabor</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setMenu(pizzasTwoFlavor)}>
+              <TouchableOpacity onPress={() => [setMenu(pizzasTwoFlavor), setFirstFlavor()]}>
                 <View style={styles.buttomView}>
                   <Image source={pizza2} style={styles.buttomImage} />
                   <Text style={styles.textItemButtom}>Pizza-G 2 Sabores</Text>
@@ -815,7 +882,7 @@ export default function App() {
 
 
                     <View style={styles.itemCart}>
-                      <Text style={styles.itemCartName} >{item.item.pizza.name}</Text>
+                      <Text style={styles.itemCartName} >{item.item.pizza && item.item.pizzatwo ? `${item.item.pizza.name} x ${item.item.pizzatwo.name}` : item.item.pizza.name} </Text>
                       <View style={styles.cartValueDecrement}>
                         <Text>R${item.item.pizza.value.toFixed(2)}</Text>
                         <View style={styles.decrement}><Text style={styles.decrementText}>-</Text></View>
