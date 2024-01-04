@@ -448,21 +448,38 @@ export default function App() {
   }
 
   function handlerCalculateValue(item) {
+    if (item.pizza & item.pizzatwo) {
+      var firstPizza = item;
+      var addAdicional = firstPizza.adicional ? firstPizza.adicional.value : 0;
+      var addPizza = firstPizza.pizza.value > firstPizza.pizzatwo.value ? (firstPizza.pizza ? firstPizza.pizza.value : 0) : (firstPizza.pizzatwo ? firstPizza.pizzatwo.value : 0);
+      // firstPizza.pizza ? firstPizza.pizza.value : 0;
+      var bordas = firstPizza.bordas ? firstPizza.bordas.value : 0;
+      var initialValue = addAdicional + addPizza + bordas;
+      var totalValue = cartItems.reduce(function (acc, pizza, index) {
+        var adicionalValue = pizza.adicional ? pizza.adicional.value : 0;
+        var bordasValue = pizza.bordas ? pizza.bordas.value : 0;
+        var pizzaValue = pizza.pizza ? pizza.pizza.value : 0;
+        return acc + adicionalValue + bordasValue + pizzaValue;
+      }, initialValue);
+
+      setTotalValue(totalValue)
+    } else {
 
 
-    var firstPizza = item;
-    var addAdicional = firstPizza.adicional ? firstPizza.adicional.value : 0;
-    var addPizza = firstPizza.pizza ? firstPizza.pizza.value : 0;
-    var bordas = firstPizza.bordas ? firstPizza.bordas.value : 0;
-    var initialValue = addAdicional + addPizza + bordas;
-    var totalValue = cartItems.reduce(function (acc, pizza, index) {
-      var adicionalValue = pizza.adicional ? pizza.adicional.value : 0;
-      var bordasValue = pizza.bordas ? pizza.bordas.value : 0;
-      var pizzaValue = pizza.pizza ? pizza.pizza.value : 0;
-      return acc + adicionalValue + bordasValue + pizzaValue;
-    }, initialValue);
+      var firstPizza = item;
+      var addAdicional = firstPizza.adicional ? firstPizza.adicional.value : 0;
+      var addPizza = firstPizza.pizza ? firstPizza.pizza.value : 0;
+      var bordas = firstPizza.bordas ? firstPizza.bordas.value : 0;
+      var initialValue = addAdicional + addPizza + bordas;
+      var totalValue = cartItems.reduce(function (acc, pizza, index) {
+        var adicionalValue = pizza.adicional ? pizza.adicional.value : 0;
+        var bordasValue = pizza.bordas ? pizza.bordas.value : 0;
+        var pizzaValue = pizza.pizza ? pizza.pizza.value : 0;
+        return acc + adicionalValue + bordasValue + pizzaValue;
+      }, initialValue);
 
-    setTotalValue(totalValue)
+      setTotalValue(totalValue)
+    }
 
   }
 
@@ -885,11 +902,11 @@ export default function App() {
                     <View style={styles.itemCart}>
                       <Text style={styles.itemCartName} >{item.item.pizza && item.item.pizzatwo ? `1/2 ${item.item.pizza.name} 1/2${item.item.pizzatwo.name}` : item.item.pizza.name} </Text>
                       <View style={styles.cartValueDecrement}>
-                        <Text>R${item.item.pizza.value.toFixed(2)}</Text>
+                        <Text>R${item.item.pizza && item.item.pizzatwo ? item.item.pizza.value > item.item.pizzatwo.value ? item.item.pizza.value : item.item.pizzatwo.value : item.item.pizza.value.toFixed(2)}</Text>
                         <View style={styles.decrement}><Text style={styles.decrementText}>-</Text></View>
                       </View>
                       <View>
-                        <Text>R${item.item.pizza.value + (item.item.bordas ? item.item.bordas.value : 0) + (item.item.adicional ? item.item.adicional.value : 0)}</Text>
+                        <Text>R${(item.item.pizza.value + (item.item.bordas ? item.item.bordas.value : 0) + (item.item.adicional ? item.item.adicional.value : 0)).toFixed(2)}</Text>
                         <Text>Quant: 1</Text>
                       </View>
                       <View style={styles.cartValueIncrement}>
@@ -1175,8 +1192,8 @@ const styles = StyleSheet.create({
 
   itemDescriptionText: {
     fontSize: 11,
-    width:308,
-    fontWeight:'bold'
+    width: 308,
+    fontWeight: 'bold'
   },
 
   cartValueDecrement: {
